@@ -5,11 +5,17 @@ import com.game.domain.NPC;
 import com.game.domain.Weapons;
 import com.game.enums.EAttribute;
 
-import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class GenericEntity implements IGenericEntity{
-    public boolean criticalHit = false;
+    public GenericEntity(NPC npcWeapon, Long weaponId) {
+        this.criticalHit = false;
+        this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
+    }
+
+    private Weapons weaponEquipped;
+
+    private boolean criticalHit;
 
     public static int rollDice(int sides){
         return ThreadLocalRandom.current().nextInt(1, sides + 1);
@@ -21,6 +27,12 @@ public class GenericEntity implements IGenericEntity{
 
     public int convertBonus(int attribute){
         return attribute / 2 - 5;
+    }
+
+    @Override
+    public void weponEquipped(NPC npcWeapon, Long weaponId) {
+        this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
+        System.out.println(this.weaponEquipped.getName() + "Está equipado");
     }
 
     public static int getAttributeValue(HasAttributes entity, EAttribute attribute) {
@@ -36,16 +48,48 @@ public class GenericEntity implements IGenericEntity{
     }
 
     @Override
-    public boolean rollAttack(NPC takeDamage, NPC dealDamage, Long weaponsId) {
+    public int rollAttack(NPC dealDamage) {
         int dice = roll20();
-        int attack = dealDamage.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponsId)).findAny().map(Weapons::getBonus).orElse(0);;
-        int armor = takeDamage.getArmor();
+        int attack = this.weaponEquipped.getBonus();
 
         if(dice == 20){
-            criticalHit = true;
+            System.out.println("Crítico");
+            this.criticalHit = true;
+            return 20;
+        }
+
+        return dice + attack;
+    }
+
+    @Override
+    public int rollDamage(NPC dealDamage) {
+        int numberOfDice = this.weaponEquipped.getNumberOfDice();
+        int diceFaces = this.weaponEquipped.getDiceFaces();
+        EAttribute scale = this.weaponEquipped.getScale();
+        int scaleBonus = getAttributeValue(dealDamage, scale);
+
+        int diceTotal = 0;
+
+        for(int i = 1; i <= numberOfDice; i++){
+            diceTotal += rollDice(diceFaces);
+        }
+
+        if(this.criticalHit){
+            diceTotal *= 2;
+            this.criticalHit = false;
+        }
+
+        return diceTotal + convertBonus(scaleBonus);
+    }
+
+    @Override
+    public boolean checkHit(NPC takeDamage, int attack) {
+        int armor = takeDamage.getArmor();
+
+        if(criticalHit){
             System.out.println("Acerto Crítico!");
             return true;
-        } else if (dice + attack >= armor) {
+        } else if (attack >= armor) {
             System.out.println("O ataque acertou o alvo!");
             return true;
         }
@@ -55,34 +99,12 @@ public class GenericEntity implements IGenericEntity{
     }
 
     @Override
-    public int rollDamage(NPC dealDamage, Long weaponsId, boolean criticalHit) {
-        int numberOfDice = dealDamage.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponsId)).findAny().map(Weapons::getNumberOfDice).orElse(1);
-        int diceFaces = dealDamage.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponsId)).findAny().map(Weapons::getDiceFaces).orElse(4);
-        int weaponDamageBonus = dealDamage.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponsId)).findAny().map(Weapons::getBonus).orElse(2);
-        EAttribute scale = dealDamage.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponsId)).findAny().map(Weapons::getScale).orElse(null);
-
-        int scaleBonus = getAttributeValue(dealDamage, scale);
-        int dice = 0;
-
-        for(int i = 1; i <= numberOfDice; i++){
-            dice += rollDice(diceFaces);
-        }
-
-        return dice + weaponDamageBonus + convertBonus(scaleBonus);
-    }
-
-    @Override
-    public boolean checkHit(NPC takeDamage) {
-        return false;
-    }
-
-    @Override
-    public void damageTaken(NPC takeDamage, NPC dealDamage, Long weaponsId) {
-
+    public void damageTaken(NPC takeDamage, int damage) {
+        takeDamage.setHp(takeDamage.getHp() - damage);
     }
 
     @Override
     public boolean isDead(NPC entity) {
-        return false;
+        return entity.getHp() <= 0;
     }
 }

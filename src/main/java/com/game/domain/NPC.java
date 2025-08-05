@@ -25,7 +25,7 @@ public class NPC implements HasAttributes{
     private int level;
 
     @Column(name = "hp", nullable = false)
-    private Long hp = 10L;
+    private int hp = 10;
 
     @Column(name = "strength", nullable = false)
     private int strength = 10;

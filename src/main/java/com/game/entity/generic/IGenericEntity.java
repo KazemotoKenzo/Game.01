@@ -4,13 +4,15 @@ import com.game.domain.NPC;
 import com.game.domain.Weapons;
 
 public interface IGenericEntity {
-    public boolean rollAttack(NPC takeDamage, NPC dealDamage, Long weaponsId);
+    public void weponEquipped(NPC npcWeapon, Long weaponId);
 
-    public int rollDamage(NPC dealDamage, Long weaponsId, boolean criticalHit);
+    public int rollAttack(NPC dealDamage);
 
-    public boolean checkHit(NPC takeDamage);
+    public int rollDamage(NPC dealDamage);
 
-    public void damageTaken(NPC takeDamage, NPC dealDamage, Long weaponsId);
+    public boolean checkHit(NPC takeDamage, int attack);
+
+    public void damageTaken(NPC takeDamage, int damage);
 
     public boolean isDead(NPC entity);
 }
