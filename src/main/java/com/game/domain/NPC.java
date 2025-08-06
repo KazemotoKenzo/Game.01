@@ -1,15 +1,9 @@
 package com.game.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
 @Entity
 @Table(name = "tb_npcs")
 public class NPC implements HasAttributes{
@@ -33,14 +27,14 @@ public class NPC implements HasAttributes{
     @Column(name = "dexterity", nullable = false)
     private int dexterity = 10;
 
-    @Column(name = "contitution", nullable = false)
-    private int contitution = 10;
+    @Column(name = "constitution", nullable = false)
+    private int constitution = 10;
 
     @Column(name = "intelligence", nullable = false)
     private int intelligence = 10;
 
-    @Column(name = "widsom", nullable = false)
-    private int widsom = 10;
+    @Column(name = "wisdom", nullable = false)
+    private int wisdom = 10;
 
     @Column(name = "charisma", nullable = false)
     private int charisma = 10;
@@ -56,13 +50,105 @@ public class NPC implements HasAttributes{
     )
     private List<Weapons> weapons;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    @Override
+    public int getStrength() {
+        return strength;
+    }
+
+    public void setStrength(int strength) {
+        this.strength = strength;
+    }
+
+    @Override
+    public int getDexterity() {
+        return dexterity;
+    }
+
+    public void setDexterity(int dexterity) {
+        this.dexterity = dexterity;
+    }
+
     @Override
     public int getConstitution() {
-        return contitution;
+        return constitution;
+    }
+
+    public void setContitution(int contitution) {
+        this.constitution = contitution;
+    }
+
+    @Override
+    public int getIntelligence() {
+        return intelligence;
+    }
+
+    public void setIntelligence(int intelligence) {
+        this.intelligence = intelligence;
     }
 
     @Override
     public int getWisdom() {
-        return widsom;
+        return wisdom;
+    }
+
+    public void setWisdom(int widsom) {
+        this.wisdom = widsom;
+    }
+
+    @Override
+    public int getCharisma() {
+        return charisma;
+    }
+
+    public void setCharisma(int charisma) {
+        this.charisma = charisma;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public void setArmor(int armor) {
+        this.armor = armor;
+    }
+
+    public List<Weapons> getWeapons() {
+        return weapons;
+    }
+
+    public void setWeapons(List<Weapons> weapons) {
+        this.weapons = weapons;
     }
 }
