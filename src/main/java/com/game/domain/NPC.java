@@ -2,8 +2,6 @@ package com.game.domain;
 
 import jakarta.persistence.*;
 
-import java.util.List;
-
 @Entity
 @Table(name = "tb_npcs")
 public class NPC implements HasAttributes{
@@ -39,12 +37,27 @@ public class NPC implements HasAttributes{
     @Column(name = "charisma", nullable = false)
     private int charisma = 10;
 
-    @Column(name = "armor", nullable = false)
-    private int armor = 10;
-
     @ManyToOne
     @JoinColumn(name = "weapon_id")
     private Weapons weapon;
+
+    @Column(name = "armor", nullable = false)
+    private int armor = 10;
+
+    public void takeDamage(int damage){
+        if (damage > 0){
+            this.hp -= damage;
+        }
+    }
+
+    @Transient
+    public boolean isDead() {
+        if(this.hp <= 0){
+            this.hp = 0;
+            return true;
+        }
+        return false;
+    }
 
     public Long getId() {
         return id;
@@ -101,7 +114,7 @@ public class NPC implements HasAttributes{
         return constitution;
     }
 
-    public void setContitution(int contitution) {
+    public void setConstitution(int contitution) {
         this.constitution = contitution;
     }
 

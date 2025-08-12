@@ -1,10 +1,9 @@
-package com.game.entity.generic;
+package com.game.domain.service;
 
 import com.game.domain.NPC;
-import com.game.domain.Weapons;
 
-public interface IGenericEntity {
-    public void weponEquipped(NPC npcWeapon, Long weaponId);
+public interface ICombatService {
+    public void weponEquipped(NPC npcWeapon);
 
     public int rollAttack(NPC dealDamage);
 

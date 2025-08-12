@@ -1,27 +1,29 @@
-package com.game.entity.generic;
+package com.game.domain.service;
 
 import com.game.domain.HasAttributes;
 import com.game.domain.NPC;
-import com.game.domain.Weapons;
 import com.game.enums.EAttribute;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class GenericEntity implements IGenericEntity{
-    public GenericEntity(NPC npcWeapon, Long weaponId) {
+@Service
+public class CombatService implements ICombatService {
+    public CombatService() {
         this.criticalHit = false;
-        //this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
     }
-
-    private Weapons weaponEquipped;
 
     private boolean criticalHit;
 
-    public static int rollDice(int sides){
+    public boolean isCriticalHit() {
+        return criticalHit;
+    }
+
+    private int rollDice(int sides){
         return ThreadLocalRandom.current().nextInt(1, sides + 1);
     }
 
-    public static int roll20(){
+    private int roll20(){
         return rollDice(20);
     }
 
@@ -30,9 +32,23 @@ public class GenericEntity implements IGenericEntity{
     }
 
     @Override
-    public void weponEquipped(NPC npcWeapon, Long weaponId) {
-        //this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
-        System.out.println(this.weaponEquipped.getName() + "Está equipado");
+    public void weponEquipped(NPC npcWeapon) {
+        System.out.println(npcWeapon.getWeapon().getName() + "Está equipado");
+    }
+
+    public void performAttack(NPC attacker, NPC target) {
+        int attackRoll = rollAttack(attacker);
+
+        if (checkHit(target, attackRoll)) {
+            int damage = rollDamage(attacker);
+            target.takeDamage(damage);
+        } else {
+            System.out.println("O ataque de " + attacker.getName() + " errou " + target.getName());
+        }
+
+        if (target.isDead()) {
+            System.out.println(target.getName() + " foi derrotado!");
+        }
     }
 
     public static int getAttributeValue(HasAttributes entity, EAttribute attribute) {
@@ -50,7 +66,7 @@ public class GenericEntity implements IGenericEntity{
     @Override
     public int rollAttack(NPC dealDamage) {
         int dice = roll20();
-        int attack = this.weaponEquipped.getBonus();
+        int attack = dealDamage.getWeapon().getBonus();
 
         if(dice == 20){
             System.out.println("Crítico");
@@ -63,9 +79,9 @@ public class GenericEntity implements IGenericEntity{
 
     @Override
     public int rollDamage(NPC dealDamage) {
-        int numberOfDice = this.weaponEquipped.getNumberOfDice();
-        int diceFaces = this.weaponEquipped.getDiceFaces();
-        EAttribute scale = this.weaponEquipped.getScale();
+        int numberOfDice = dealDamage.getWeapon().getNumberOfDice();
+        int diceFaces = dealDamage.getWeapon().getDiceFaces();
+        EAttribute scale = dealDamage.getWeapon().getScale();
         int scaleBonus = getAttributeValue(dealDamage, scale);
 
         int diceTotal = 0;
