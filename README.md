@@ -14,8 +14,6 @@ Database: PostgreSQL 17.5
 
 IDE: IntelliJ IDEA (recommended)
 
-API: [Insert more details if applicable, or remove this line if the "API" refers to the internal project setup]
-
 🚀 Getting Started
 
 Note: The project is still in early development. More features will be added soon.
