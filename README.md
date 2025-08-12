@@ -40,7 +40,7 @@ bash
 Copy
 Edit
 http://localhost:8080/dev/creator/weapons
-Here, create your first weapon — a "Disarmed" weapon to serve as the default for all NPCs if no specific weapon is selected.
+Here, create your first weapon — a "Unarmed" weapon to serve as the default for all NPCs if no specific weapon is selected.
 
 🛠️ Tech Stack
 
@@ -52,4 +52,6 @@ IntelliJ IDEA
 
 Maven
 
-(You can add frameworks/libs here later, like Spring Boot, Hibernate, etc., if used)
+Spring Boot
+
+Hibernate
