@@ -1,9 +1,9 @@
 📌 Current Progress
 At the moment, the project contains:
 
-A working interface to create weapon equipment,
+A working interface to create weapon equipment and npc
 
-Fully integrated with a PostgreSQL database.
+Fully integrated with a PostgreSQL database
 
 ⚙️ Requirements
 To run this project, you will need:
@@ -17,6 +17,7 @@ IDE: IntelliJ IDEA (recommended)
 API: [Insert more details if applicable, or remove this line if the "API" refers to the internal project setup]
 
 🚀 Getting Started
+
 Note: The project is still in early development. More features will be added soon.
 
 Clone this repository:
@@ -29,14 +30,20 @@ Open the project in IntelliJ IDEA.
 
 Configure your PostgreSQL database connection.
 
+Remember: Edit the application.properties file located at src/main/resources to match your PostgreSQL database information.
+
 Run the project using the IDE or your preferred build tool.
 
-Note:
-If your IDE doesn't create the target/ folder or doesn't download the dependencies from pom.xml, you may need to install Maven manually.
+After starting the project, open your browser and go to:
 
-Then, open a terminal, navigate to the project's root folder, and run:
+bash
+Copy
+Edit
+http://localhost:8080/dev/creator/weapons
+Here, create your first weapon — a "Disarmed" weapon to serve as the default for all NPCs if no specific weapon is selected.
 
 🛠️ Tech Stack
+
 Java (OpenJDK 17)
 
 PostgreSQL 17.5
