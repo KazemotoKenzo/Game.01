@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Combat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+</head>
+<body data-bs-theme="dark">
+<h1 class="m-5 text-center">Criação de NPCs(dev)</h1>
+
+<div class="row justify-content-center">
+    <div class="row">
+        <form action="#" th:action="@{/dev/creator/npcs/save}" th:object="${newNpc}" method="post" class="container">
+            <div class="mb-3">
+                <label for="inputName" class="form-label">Nome do NPC</label>
+                <input type="text" th:field="*{name}" required class="form-control" id="inputName">
+            </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="level" class="form-label">Level</label>
+                    <input type="number" th:field="*{level}" class="form-control" id="level">
+                </div>
+                <div class="col-4">
+                    <label for="hp" class="form-label">HP</label>
+                    <input type="number" th:field="*{hp}" class="form-control" id="hp">
+                </div>
+                <div class="col-4">
+                    <label for="armor" class="form-label">Armadura</label>
+                    <input type="number" th:field="*{armor}" class="form-control" id="armor">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-2">
+                    <label for="strength" class="form-label">Força</label>
+                    <input type="number" th:field="*{strength}" class="form-control" id="strength">
+                </div>
+                <div class="col-2">
+                    <label for="dexterity" class="form-label">Destreza</label>
+                    <input type="number" th:field="*{dexterity}" class="form-control" id="dexterity">
+                </div>
+                <div class="col-2">
+                    <label for="constitution" class="form-label">Contituição</label>
+                    <input type="number" th:field="*{constitution}" class="form-control" id="constitution">
+                </div>
+                <div class="col-2">
+                    <label for="intelligence" class="form-label">Inteligência</label>
+                    <input type="number" th:field="*{intelligence}" class="form-control" id="intelligence">
+                </div>
+                <div class="col-2">
+                    <label for="wisdom" class="form-label">Sabedoria</label>
+                    <input type="number" th:field="*{wisdom}" class="form-control" id="wisdom">
+                </div>
+                <div class="col-2">
+                    <label for="charisma" class="form-label">Carisma</label>
+                    <input type="number" th:field="*{charisma}" class="form-control" id="charisma">
+                </div>
+            </div>
+            <select class="form-select" name="weaponId" aria-label="Arma Equipada">
+                <option value="">Selecione uma arma</option>
+                <th:block th:each="weapon : ${weapons}">
+                    <option th:value="${weapon.id}" th:text="${weapon.name}"></option>
+                </th:block>
+            </select>
+
+            <button type="submit" class="btn btn-primary mt-3">Enviar</button>
+        </form>
+    </div>
+
+    <div class="row mt-5">
+        <table class="table container">
+            <thead>
+            <tr>
+                <th scope="col">Nome</th>
+                <th scope="col">HP</th>
+                <th scope="col">Armadura</th>
+                <th scope="col">Força</th>
+                <th scope="col">Destreza</th>
+                <th scope="col">Constituição</th>
+                <th scope="col">Inteligência</th>
+                <th scope="col">Sabedoria</th>
+                <th scope="col">Carisma</th>
+                <th scope="col">Arma Equipada</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="npc : ${showNpcs}">
+                <td th:text="${npc.name}">Espada Longa</td>
+                <td th:text="${npc.hp}">8</td>
+                <td th:text="${npc.armor}">1</td>
+                <td th:text="${npc.strength}">10</td>
+                <td th:text="${npc.dexterity}">10</td>
+                <td th:text="${npc.constitution}">10</td>
+                <td th:text="${npc.intelligence}">10</td>
+                <td th:text="${npc.wisdom}">10</td>
+                <td th:text="${npc.charisma}">10</td>
+                <td th:text="${npc.weapon.name}">1</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

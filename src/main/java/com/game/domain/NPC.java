@@ -16,7 +16,7 @@ public class NPC implements HasAttributes{
     private String name;
 
     @Column(name = "level", nullable = false)
-    private int level;
+    private int level = 1;
 
     @Column(name = "hp", nullable = false)
     private int hp = 10;
@@ -42,13 +42,9 @@ public class NPC implements HasAttributes{
     @Column(name = "armor", nullable = false)
     private int armor = 10;
 
-    @ManyToMany
-    @JoinTable(
-            name = "npc_weapons",
-            joinColumns = @JoinColumn(name = "npc_id"),
-            inverseJoinColumns = @JoinColumn(name = "weapons_id")
-    )
-    private List<Weapons> weapons;
+    @ManyToOne
+    @JoinColumn(name = "weapon_id")
+    private Weapons weapon;
 
     public Long getId() {
         return id;
@@ -144,11 +140,11 @@ public class NPC implements HasAttributes{
         this.armor = armor;
     }
 
-    public List<Weapons> getWeapons() {
-        return weapons;
+    public Weapons getWeapon() {
+        return weapon;
     }
 
-    public void setWeapons(List<Weapons> weapons) {
-        this.weapons = weapons;
+    public void setWeapon(Weapons weapon) {
+        this.weapon = weapon;
     }
 }

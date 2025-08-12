@@ -16,9 +16,6 @@ public class Weapons {
     @Column(name = "name", nullable = false, length = 50)
     private String name;
 
-    @ManyToMany(mappedBy = "weapons")
-    private List<NPC> npcs;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "scaling_attribute")
     private EAttribute scale;
@@ -46,14 +43,6 @@ public class Weapons {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<NPC> getNpcs() {
-        return npcs;
-    }
-
-    public void setNpcs(List<NPC> npcs) {
-        this.npcs = npcs;
     }
 
     public EAttribute getScale() {

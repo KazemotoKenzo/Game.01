@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GenericEntity implements IGenericEntity{
     public GenericEntity(NPC npcWeapon, Long weaponId) {
         this.criticalHit = false;
-        this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
+        //this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
     }
 
     private Weapons weaponEquipped;
@@ -31,7 +31,7 @@ public class GenericEntity implements IGenericEntity{
 
     @Override
     public void weponEquipped(NPC npcWeapon, Long weaponId) {
-        this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
+        //this.weaponEquipped = npcWeapon.getWeapons().stream().filter(weapon -> weapon.getId().equals(weaponId)).findAny().orElse(null);
         System.out.println(this.weaponEquipped.getName() + "Está equipado");
     }
 
