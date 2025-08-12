@@ -25,7 +25,7 @@ Clone this repository:
 bash
 Copy
 Edit
-git clone https://github.com/your-username/your-project-name.git
+git clone https://github.com/KazemotoKenzo/Game.01.git
 Open the project in IntelliJ IDEA.
 
 Configure your PostgreSQL database connection.
