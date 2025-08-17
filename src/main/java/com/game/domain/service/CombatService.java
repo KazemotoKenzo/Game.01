@@ -19,11 +19,11 @@ public class CombatService implements ICombatService {
         return criticalHit;
     }
 
-    private int rollDice(int sides){
+    public static int rollDice(int sides){
         return ThreadLocalRandom.current().nextInt(1, sides + 1);
     }
 
-    private int roll20(){
+    public static int roll20(){
         return rollDice(20);
     }
 
@@ -92,8 +92,8 @@ public class CombatService implements ICombatService {
 
         if(this.criticalHit){
             diceTotal *= 2;
-            this.criticalHit = false;
         }
+        this.criticalHit = false;
 
         return diceTotal + convertBonus(scaleBonus);
     }

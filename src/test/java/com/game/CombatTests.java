@@ -34,7 +34,7 @@ class CombatTests {
 	}
 
 	@Test
-	void rollAttack_retorna20ativarCritico(){
+	void rollAttackRetorna20ativarCritico(){
 		try (MockedStatic<ThreadLocalRandom> mockedRandom = Mockito.mockStatic(ThreadLocalRandom.class)){
 			ThreadLocalRandom randomMock = Mockito.mock(ThreadLocalRandom.class);
 
@@ -49,6 +49,50 @@ class CombatTests {
 
 			assertThat(attackResult).isEqualTo(20);
 			assertThat(combateService.isCriticalHit()).isTrue();
+		}
+	}
+
+	@Test
+	void rollAttackNaoRetornCriticoMenos20() {
+		try (MockedStatic<ThreadLocalRandom> mockedRandom = Mockito.mockStatic(ThreadLocalRandom.class)) {
+			ThreadLocalRandom randomMock = Mockito.mock(ThreadLocalRandom.class);
+
+			mockedRandom.when(ThreadLocalRandom::current).thenReturn(randomMock);
+
+			when(randomMock.nextInt(anyInt(), anyInt())).thenReturn(10);
+
+			when(mockAttacker.getWeapon()).thenReturn(mockWeapon);
+			when(mockWeapon.getBonus()).thenReturn(3);
+
+			int attackResult = combateService.rollAttack(mockAttacker);
+
+			assertThat(attackResult).isEqualTo(13);
+			assertThat(combateService.isCriticalHit()).isFalse();
+		}
+	}
+
+	@Test
+	void rollDamage_deveRolarDanoDobrado_quandoAtaqueForCritico() {
+		when(mockAttacker.getWeapon()).thenReturn(mockWeapon);
+		when(mockWeapon.getNumberOfDice()).thenReturn(2);
+		when(mockWeapon.getDiceFaces()).thenReturn(6);
+		when(mockWeapon.getScale()).thenReturn(EAttribute.STRENGTH);
+		when(mockWeapon.getBonus()).thenReturn(0);
+		when(mockAttacker.getStrength()).thenReturn(14);
+
+		combateService.rollAttack(mockAttacker);
+		rollAttackRetorna20ativarCritico();
+
+
+		try (MockedStatic<CombatService> mockedEntity = Mockito.mockStatic(CombatService.class)) {
+			mockedEntity.when(() -> CombatService.rollDice(6)).thenReturn(5, 4);
+
+			mockedEntity.when(() -> CombatService.getAttributeValue(Mockito.any(), Mockito.any())).thenCallRealMethod();
+
+			int damage = combateService.rollDamage(mockAttacker);
+
+			assertThat(damage).isEqualTo(20);
+			assertThat(combateService.isCriticalHit()).isFalse();
 		}
 	}
 }
